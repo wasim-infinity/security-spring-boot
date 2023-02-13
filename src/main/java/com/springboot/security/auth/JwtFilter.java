@@ -49,15 +49,10 @@ public class JwtFilter extends OncePerRequestFilter {
 						.put("Stacktrace", e.getStackTrace()).toString());
 			}
 		}
-		System.out.println("userName"+userName);
 
 		if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = service.loadUserByUsername(userName);
-			System.out.println(userDetails.getUsername());
-			System.out.println(userDetails.getPassword());
-			System.out.println(userDetails.getAuthorities());
 			if (jwtUtil.validateToken(jwtToken)) {
-				System.out.println("valid-token");
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
 				usernamePasswordAuthenticationToken
