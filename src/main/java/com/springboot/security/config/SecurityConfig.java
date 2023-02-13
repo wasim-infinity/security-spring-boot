@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -35,17 +36,24 @@ public class SecurityConfig {
 
 	@Autowired
 	private JwtFilter jwtFilter;
+	
+	@Autowired
+	private AuthenticationEntryPoint authenticationEntryPoint;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable())
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/home", "/login", "/create-account").permitAll()
-						.requestMatchers("/user").hasAuthority("USER").requestMatchers("/admin").hasAuthority("ADMIN")
-						.anyRequest().authenticated())
-				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+		http.csrf(csrf -> csrf.disable());
+		http.authorizeHttpRequests(
+				auth -> auth
+				.requestMatchers("/home", "/login", "/create-account").permitAll()
+				.requestMatchers("/user").hasAuthority("USER")
+				.requestMatchers("/admin").hasAuthority("ADMIN")
+				.anyRequest().authenticated())
+				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+						);
+		http.exceptionHandling()
+		.authenticationEntryPoint(authenticationEntryPoint);
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
 		http.authenticationProvider(daoAuthenticationProvider());
 		DefaultSecurityFilterChain defaultSecurityFilterChain = http.build();
 		return defaultSecurityFilterChain;
