@@ -45,7 +45,7 @@ public class SecurityConfig {
 		http.csrf(csrf -> csrf.disable());
 		http.authorizeHttpRequests(
 				auth -> auth
-				.requestMatchers("/home", "/login", "/create-account").permitAll()
+				.requestMatchers("/login", "/user/create-account").permitAll()
 				.requestMatchers("/user").hasAuthority("USER")
 				.requestMatchers("/admin").hasAuthority("ADMIN")
 				.anyRequest().authenticated())
