@@ -65,4 +65,16 @@ public class TblUserDetails {
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date updatedAt;
+
+	public TblUserDetails(long id, String userName, String password, Set<String> roles, Date createdAt,
+			Date updatedAt) {
+		super();
+		this.id = id;
+		this.userName = userName;
+		this.password = password;
+		this.roles = roles;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+	
 }
