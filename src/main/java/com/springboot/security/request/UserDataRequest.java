@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDataRequest {
+	
+	private String email;
 
 	private String username; 
 	
