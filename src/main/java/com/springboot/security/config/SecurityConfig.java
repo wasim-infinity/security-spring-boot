@@ -47,7 +47,7 @@ public class SecurityConfig {
 				auth -> auth
 				.requestMatchers("/login", "/user/create-account").permitAll()
 				.requestMatchers("/user").hasAuthority("USER")
-				.requestMatchers("/admin").hasAuthority("ADMIN")
+				.requestMatchers("/admin/get-users").hasAuthority("ADMIN")
 				.anyRequest().authenticated())
 				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 						);

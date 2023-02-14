@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class CommonUtils {
 
-	public static final LocalDate stringToDate(String s, String dateFormat) {
+	public static final Object stringToDate(String s, String dateFormat, boolean isDate) {
 
 		SimpleDateFormat format = new SimpleDateFormat(dateFormat);
 		try {
@@ -17,10 +17,8 @@ public class CommonUtils {
 			c.setTime(format.parse(s));
 			s = format.format(c.getTime());
 			Date d = format.parse(s);
-			System.out.println("date >> " + d);
 			LocalDate date = d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			System.out.println("local date >>> " + date);
-			return date;
+			return isDate?d:date;
 
 		} catch (ParseException e) {
 			// e.printStackTrace();

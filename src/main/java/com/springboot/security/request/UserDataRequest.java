@@ -26,8 +26,7 @@ public class UserDataRequest {
 	private String callCharge;
 
 	private String dob;
-	
+
 	private Device device;
 
-	private Set<String> role;
 }
