@@ -3,12 +3,14 @@ package com.springboot.security.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.security.response.UserResponse;
+import com.springboot.security.service.AdminService;
 import com.springboot.security.service.UserService;
 
 @RestController
@@ -17,6 +19,9 @@ public class AdminController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	AdminService adminService;
 
 	
 	@GetMapping("/get-users")
@@ -35,6 +40,11 @@ public class AdminController {
 
 		return userService.getUsers(src_field, src_txt);
 		
+	}
+	
+	@PostMapping("/map-users")
+	public ResponseEntity<String> mapUsers(@RequestHeader String token){
+		return adminService.mapUsers();
 	}
 
 }
