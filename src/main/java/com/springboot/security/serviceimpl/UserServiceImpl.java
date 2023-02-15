@@ -134,6 +134,39 @@ public class UserServiceImpl implements UserService {
 				if (src_fields[0].contentEquals("email") && src_fields[1].contentEquals("phone")) {
 					userList = userDataRepository.findAllByEmailAndPhone(src_texts[0], src_texts[1]);
 					response.setCount(userList.size());
+				}else if (src_fields[0].contentEquals("phone") && src_fields[1].contentEquals("email")) {
+					userList = userDataRepository.findAllByPhoneEmail(src_texts[0], src_texts[1]);
+					response.setCount(userList.size());
+				}else if (src_fields[0].contentEquals("email") && src_fields[1].contentEquals("userName")) {
+					userList = userDataRepository.findAllByEmailUserName(src_texts[0], src_texts[1]);
+					response.setCount(userList.size());
+				}else if (src_fields[0].contentEquals("userName") && src_fields[1].contentEquals("email")) {
+					userList = userDataRepository.findAllByUserNameEmail(src_texts[0], src_texts[1]);
+					response.setCount(userList.size());
+				}else if (src_fields[0].contentEquals("email") && src_fields[1].contentEquals("address")) {
+					userList = userDataRepository.findAllByEmailAddress(src_texts[0], src_texts[1]);
+					response.setCount(userList.size());
+				}else if (src_fields[0].contentEquals("address") && src_fields[1].contentEquals("email")) {
+					userList = userDataRepository.findAllByAddressEmail(src_texts[0], src_texts[1]);
+					response.setCount(userList.size());
+				}else if (src_fields[0].contentEquals("phone") && src_fields[1].contentEquals("userName")) {
+					userList = userDataRepository.findAllByPhoneUserName(src_texts[0], src_texts[1]);
+					response.setCount(userList.size());
+				}else if (src_fields[0].contentEquals("phone") && src_fields[1].contentEquals("address")) {
+					userList = userDataRepository.findAllByPhoneAddress(src_texts[0], src_texts[1]);
+					response.setCount(userList.size());
+				}else if (src_fields[0].contentEquals("userName") && src_fields[1].contentEquals("phone")) {
+					userList = userDataRepository.findAllByUserNamePhone(src_texts[0], src_texts[1]);
+					response.setCount(userList.size());
+				}else if (src_fields[0].contentEquals("address") && src_fields[1].contentEquals("phone")) {
+					userList = userDataRepository.findAllByAddressPhone(src_texts[0], src_texts[1]);
+					response.setCount(userList.size());
+				}else if (src_fields[0].contentEquals("userName") && src_fields[1].contentEquals("Address")) {
+					userList = userDataRepository.findAllByUserNameAddress(src_texts[0], src_texts[1]);
+					response.setCount(userList.size());
+				}else if (src_fields[0].contentEquals("address") && src_fields[1].contentEquals("UserName")) {
+					userList = userDataRepository.findAllByAddressUserName(src_texts[0], src_texts[1]);
+					response.setCount(userList.size());
 				}
 			}
 		}
