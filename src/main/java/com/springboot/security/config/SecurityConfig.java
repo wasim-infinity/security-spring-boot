@@ -46,7 +46,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(
 				auth -> auth
 				.requestMatchers("/login", "/user/create-account", "/sendMail").permitAll()
-				.requestMatchers("/user/get-mapped-users").hasAuthority("USER")
+				.requestMatchers("/user/get-mapped-users", "/user/call").hasAuthority("USER")
 				.requestMatchers("/admin/get-users","/admin/map-users").hasAuthority("ADMIN")
 				.anyRequest().authenticated())
 				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

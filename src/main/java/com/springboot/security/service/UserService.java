@@ -14,4 +14,6 @@ public interface UserService {
 
 	ResponseEntity<UserResponse> getUsers(String src_field, String src_txt);
 
+	ResponseEntity<String> call(String token, long recieverId);
+
 }

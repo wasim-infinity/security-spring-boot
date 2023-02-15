@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -16,9 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.springboot.security.auth.JwtUtil;
 import com.springboot.security.entity.Device;
 import com.springboot.security.entity.TblUserDetails;
+import com.springboot.security.entity.TblUserMapping;
 import com.springboot.security.repository.UserDetailsRepository;
+import com.springboot.security.repository.UserMappingRepository;
 import com.springboot.security.request.UserDataRequest;
 import com.springboot.security.response.ResponseData;
 import com.springboot.security.response.ResponseHelper;
@@ -37,6 +41,14 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private BCryptPasswordEncoder pwdEncoder;
+	
+	@Autowired
+	private JwtUtil jwtUtil;
+	
+	@Autowired
+	private UserMappingRepository userMappingRepository;
+	
+	private static double availableBalance = 100;
 
 	@Override
 	public ResponseEntity<ResponseData> createAccount(UserDataRequest userDataRequest) {
@@ -229,5 +241,36 @@ public class UserServiceImpl implements UserService {
 		return tblUserDetails;
 
 	}
+
+	@Override
+	public ResponseEntity<String> call(String token, long recieverId) {
+		
+		String callerUserName = jwtUtil.extractUsername(token);
+		TblUserDetails caller = userDataRepository.findByUserName(callerUserName);
+		Optional<TblUserDetails> reciever = userDataRepository.findById(recieverId);
+		
+		if(reciever.isEmpty()) {
+			return new ResponseEntity<String>("User with id "+recieverId+" not found", HttpStatus.BAD_REQUEST);
+		}
+		
+		TblUserMapping tblUserMapping = userMappingRepository.findByUserOneAndUserTwo(caller, reciever.get());
+		
+		if(!Objects.isNull(tblUserMapping)) {
+			double callCharge = Double.parseDouble(reciever.get().getCallCharge());
+			if(availableBalance >= callCharge) {
+				availableBalance = availableBalance - callCharge;
+				return new ResponseEntity<String>("Call Successfull", HttpStatus.OK);
+			}else {
+				return new ResponseEntity<String>("Insufficient balance", HttpStatus.BAD_REQUEST);
+			}
+		}else {
+			return new ResponseEntity<String>("User with id "+recieverId+" is not linked", HttpStatus.BAD_REQUEST);
+		}
+	
+	}
+	
+	
+	
+	
 
 }

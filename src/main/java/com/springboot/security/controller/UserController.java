@@ -43,5 +43,10 @@ public class UserController {
 		return userService.getUsers(src_field, src_txt);
 
 	}
+	
+	@GetMapping("/call")
+	public ResponseEntity<String> call(@RequestHeader String token, @RequestParam long recieverId){
+		return userService.call(token, recieverId);
+	}
 
 }
